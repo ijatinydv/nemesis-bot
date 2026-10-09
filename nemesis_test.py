@@ -114,6 +114,46 @@ class NemesisContractTests(unittest.TestCase):
                     "sell_gross_usd": 0.0, "sell_fees_usd": 0.0}
         self.assertEqual(bot.decide(make_obs(1_000_000.0, 200.0, position=position, cash=6.0))["action"], "SELL")
 
+    # a position with unparseable fields must still be closed instead of being held forever
+    def test_unreadable_position_sells(self) -> None:
+        bot = armed_bot()
+        obs = make_obs(1_000_000.0, 100.0, position={"outcome": "YES"}, cash=6.0)
+        self.assertEqual(bot.decide(obs)["action"], "SELL")
+
+    # a provisional or stale reference must never produce an entry
+    def test_bad_reference_blocks_entry(self) -> None:
+        bot = armed_bot()
+        obs = make_obs(1_000_000.0, 80.0)
+        obs["reference"]["targetProvisional"] = True
+        self.assertEqual(bot.decide(obs)["action"], "HOLD")
+        bot = armed_bot()
+        obs = make_obs(1_000_000.0, 80.0)
+        obs["reference"]["observedAt"] = 1_000_000.0 - 10.0
+        self.assertEqual(bot.decide(obs)["action"], "HOLD")
+
+    # a BUY needs asks, so empty ask books must hold
+    def test_no_buy_without_asks(self) -> None:
+        bot = armed_bot()
+        obs = make_obs(1_000_000.0, 80.0)
+        obs["books"]["YES"]["asks"] = []
+        obs["books"]["NO"]["asks"] = []
+        self.assertEqual(bot.decide(obs)["action"], "HOLD")
+
+    # a forced exit must work against a bids-only book near expiry
+    def test_sell_with_bids_only(self) -> None:
+        bot = armed_bot()
+        position = {"outcome": "YES", "shares": 5.0, "buy_gross_usd": 3.5, "buy_fees_usd": 0.08,
+                    "sell_gross_usd": 0.0, "sell_fees_usd": 0.0}
+        obs = make_obs(1_000_000.0, 4.0, position=position, cash=6.0)
+        obs["books"]["YES"]["asks"] = []
+        self.assertEqual(bot.decide(obs)["action"], "SELL")
+
+    # a market rollover with a repeated clock must not crash or return an invalid action
+    def test_rollover_and_repeated_timestamps(self) -> None:
+        bot = armed_bot()
+        for market, tau in (("m1", 20.0), ("m1", 20.0), ("m2", 290.0), ("m2", 289.0)):
+            self.assertIn(bot.decide(make_obs(1_000_000.0, tau, market=market))["action"], {"HOLD", "BUY", "SELL"})
+
 
 if __name__ == "__main__":
     unittest.main()

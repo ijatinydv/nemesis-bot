@@ -234,6 +234,12 @@ class NemesisBot:
         try:
             return self._decide(obs)
         except Exception:
+            # an unreadable observation that still shows an open position must flatten rather than strand inventory
+            try:
+                if obs["account"].get("position") is not None:
+                    return {"action": "SELL"}
+            except Exception:
+                pass
             return {"action": "HOLD"}
 
     # one observation: update models, advance shadows, then make the live call
