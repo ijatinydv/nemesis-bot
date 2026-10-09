@@ -1,0 +1,10 @@
+efficient  vol med   293.0 max   323.6 | cross 0/3 flat 3/3 | cash med  1.79 | cash@cross - | cycles med 34 unsold 0
+lag1.5     vol med   278.8 max   348.6 | cross 0/3 flat 3/3 | cash med  0.23 | cash@cross - | cycles med 38 unsold 0
+lag3       vol med  1010.0 max  1011.0 | cross 3/3 flat 3/3 | cash med 147.07 | cash@cross med 147.07 min 128.28 | cycles med 87 unsold 0
+underconf  vol med   368.5 max   415.8 | cross 0/3 flat 3/3 | cash med  2.51 | cash@cross - | cycles med 43 unsold 0
+overconf   vol med   126.5 max   198.1 | cross 0/3 flat 3/3 | cash med  1.69 | cash@cross - | cycles med 18 unsold 0
+momentum   vol med   167.2 max   171.6 | cross 0/3 flat 3/3 | cash med  0.16 | cash@cross - | cycles med 21 unsold 0
+wide       vol med  1000.6 max  1009.5 | cross 2/3 flat 3/3 | cash med 63.50 | cash@cross med 94.12 min 63.50 | cycles med 96 unsold 0
+refnoise   vol med  1001.8 max  1006.3 | cross 3/3 flat 3/3 | cash med 21.01 | cash@cross med 21.01 min 14.89 | cycles med 120 unsold 0
+weak       vol med   340.5 max   495.3 | cross 0/3 flat 3/3 | cash med  2.42 | cash@cross - | cycles med 40 unsold 0
+elapsed 434s
