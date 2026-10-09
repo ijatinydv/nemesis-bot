@@ -1,0 +1,92 @@
+{
+  "contract": {
+    "startingCashUsd": 10,
+    "maximumFeeInclusiveBuyUsd": 5,
+    "targetEligibleVolumeUsd": 1000,
+    "hours": 24
+  },
+  "evidenceClass": "development diagnostic on 30 resampled paths from recorded regimes; not fresh-forward qualification evidence",
+  "variants": [
+    {
+      "name": "house-bot-v1",
+      "description": "Best validated balance of volume and terminal-flat completion; source code included.",
+      "config": {
+        "decision_seconds_to_close": 90,
+        "forced_exit_seconds_to_close": 60,
+        "maximum_cycles_per_market": 2,
+        "maximum_entry_price": 0.9,
+        "maximum_immediate_roundtrip_loss_usd": 0.4,
+        "maximum_reference_age_seconds": 1.5,
+        "minimum_gap_usd": 50,
+        "minimum_profit_per_share_usd": 0,
+        "reentry_cooldown_seconds": 2,
+        "require_book_favorite_agreement": false,
+        "require_immediate_exit_depth": true,
+        "stop_loss_per_share_usd": 0.1,
+        "target_shares": 5
+      },
+      "validation": {
+        "medianVolumeAllPathsUsd": 558.826326,
+        "bestVolumeUsd": 942.594433,
+        "terminalFlatPaths": 18,
+        "totalPaths": 30,
+        "pathsAtOrAbove750": 6,
+        "pathsAtOrAbove1000": 0
+      }
+    },
+    {
+      "name": "precision-reference-variant",
+      "description": "Requires book/reference agreement, caps immediate loss, and targets one cent per share.",
+      "config": {
+        "decision_seconds_to_close": 120,
+        "forced_exit_seconds_to_close": 60,
+        "maximum_cycles_per_market": 3,
+        "maximum_entry_price": 0.85,
+        "maximum_immediate_roundtrip_loss_usd": 0.4,
+        "maximum_reference_age_seconds": 1.5,
+        "minimum_gap_usd": 20,
+        "minimum_profit_per_share_usd": 0.01,
+        "reentry_cooldown_seconds": 2,
+        "require_book_favorite_agreement": true,
+        "require_immediate_exit_depth": true,
+        "stop_loss_per_share_usd": null,
+        "target_shares": 5
+      },
+      "validation": {
+        "medianVolumeAllPathsUsd": 168.91614,
+        "bestVolumeUsd": 762.164847,
+        "terminalFlatPaths": 14,
+        "totalPaths": 30,
+        "pathsAtOrAbove750": 1,
+        "pathsAtOrAbove1000": 0
+      }
+    },
+    {
+      "name": "aggressive-reference-variant",
+      "description": "Same reference family without the immediate-loss filter; more upside in some paths, less reliable overall.",
+      "config": {
+        "decision_seconds_to_close": 120,
+        "forced_exit_seconds_to_close": 60,
+        "maximum_cycles_per_market": 3,
+        "maximum_entry_price": 0.85,
+        "maximum_immediate_roundtrip_loss_usd": null,
+        "maximum_reference_age_seconds": 1.5,
+        "minimum_gap_usd": 20,
+        "minimum_profit_per_share_usd": 0.01,
+        "reentry_cooldown_seconds": 2,
+        "require_book_favorite_agreement": true,
+        "require_immediate_exit_depth": true,
+        "stop_loss_per_share_usd": null,
+        "target_shares": 5
+      },
+      "validation": {
+        "medianVolumeAllPathsUsd": 168.308033,
+        "bestVolumeUsd": 818.041613,
+        "terminalFlatPaths": 14,
+        "totalPaths": 30,
+        "pathsAtOrAbove750": 3,
+        "pathsAtOrAbove1000": 0
+      }
+    }
+  ]
+}
