@@ -1,0 +1,7 @@
+lag1.5     vol med   129.8 max   514.3 | cross 0/4 flat 4/4 | cash med 20.43 | cash@cross - | cycles med 14 unsold 0
+underconf  vol med     4.2 max    25.8 | cross 0/4 flat 4/4 | cash med  9.43 | cash@cross - | cycles med 0 unsold 0
+overconf   vol med     0.0 max     0.0 | cross 0/4 flat 4/4 | cash med 10.00 | cash@cross - | cycles med 0 unsold 0
+momentum   vol med     0.0 max    10.4 | cross 0/4 flat 4/4 | cash med 10.00 | cash@cross - | cycles med 0 unsold 0
+refnoise   vol med   408.7 max   618.4 | cross 0/4 flat 4/4 | cash med 15.29 | cash@cross - | cycles med 46 unsold 0
+weak       vol med     0.0 max     8.5 | cross 0/4 flat 4/4 | cash med 10.00 | cash@cross - | cycles med 0 unsold 0
+elapsed 390s
