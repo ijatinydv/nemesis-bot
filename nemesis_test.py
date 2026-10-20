@@ -33,7 +33,7 @@ def make_obs(ts: float, tau: float, *, market: str = "m1", cash: float = 10.0, v
 def armed_bot() -> nb.NemesisBot:
     bot = nb.NemesisBot()
     arm = bot.arms[0]
-    arm.p = {"e": -1.0, "lo": 15, "hi": 280, "pmax": 0.95}
+    arm.p = {"e": -1.0, "lo": 15, "hi": 280, "pmax": 0.95, "pmin": 0.05}
     bot.active = [arm]
     bot.start_ts = 1_000_000.0 - nb.WARMUP_SECONDS - 10
     bot.last_rerank = 1e12
