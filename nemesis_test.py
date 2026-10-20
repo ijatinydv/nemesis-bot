@@ -33,7 +33,7 @@ def make_obs(ts: float, tau: float, *, market: str = "m1", cash: float = 10.0, v
 def armed_bot() -> nb.NemesisBot:
     bot = nb.NemesisBot()
     arm = bot.arms[0]
-    arm.p = {"e": -1.0, "lo": 15, "hi": 280, "pmax": 0.95}
+    arm.p = {"e": -1.0, "lo": 15, "hi": 280, "pmax": 0.95, "pmin": 0.05}
     bot.active = [arm]
     bot.start_ts = 1_000_000.0 - nb.WARMUP_SECONDS - 10
     bot.last_rerank = 1e12
@@ -153,6 +153,19 @@ class NemesisContractTests(unittest.TestCase):
         bot = armed_bot()
         for market, tau in (("m1", 20.0), ("m1", 20.0), ("m2", 290.0), ("m2", 289.0)):
             self.assertIn(bot.decide(make_obs(1_000_000.0, tau, market=market))["action"], {"HOLD", "BUY", "SELL"})
+
+
+    # the house-style dollar-gap strategy must buy the favoured side on a large gap and ignore a small one
+    def test_gap_arm_enters_on_large_gap_only(self) -> None:
+        for gap, expected in ((120.0, "BUY"), (5.0, "HOLD")):
+            bot = armed_bot()
+            arm = next(a for a in bot.arms if a.kind == "gap" and a.p["pmin"] == 0.05)
+            arm.score = 0.05
+            bot.active = [arm]
+            decision = bot.decide(make_obs(1_000_000.0, 60.0, gap=gap))
+            self.assertEqual(decision["action"], expected)
+            if expected == "BUY":
+                self.assertEqual(decision["outcome"], "YES")
 
 
 if __name__ == "__main__":
