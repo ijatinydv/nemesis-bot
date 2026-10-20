@@ -60,6 +60,10 @@ SCENARIOS = {
     "wide": Scenario("wide", mm_lag=2.0, spread_extra=0.01, mm_noise=0.03),
     "refnoise": Scenario("refnoise", mm_lag=2.5, mm_noise=0.03, ref_noise_usd=12.0),
     "weak": Scenario("weak", mm_lag=1.0, mm_noise=0.012),
+    "lag4": Scenario("lag4", mm_lag=4.0, mm_noise=0.03),
+    "lag5n": Scenario("lag5n", mm_lag=5.0, mm_noise=0.04),
+    "lag6": Scenario("lag6", mm_lag=6.0, mm_noise=0.04, update_prob=0.5),
+    "lag4v": Scenario("lag4v", mm_lag=4.0, mm_noise=0.03, vol_ann=0.7),
 }
 
 
