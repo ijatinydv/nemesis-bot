@@ -1,0 +1,4 @@
+lag35      vol med  1007.3 max  1007.8 | cross 3/3 flat 3/3 | cash med 167.38 | cash@cross med 167.38 min 118.83 | cycles med 84 unsold 0
+lag35w     vol med  1009.5 max  1011.5 | cross 3/3 flat 3/3 | cash med 84.11 | cash@cross med 84.11 min 74.06 | cycles med 95 unsold 0
+lag4       vol med  1001.4 max  1007.6 | cross 3/3 flat 3/3 | cash med 189.86 | cash@cross med 189.86 min 125.10 | cycles med 82 unsold 0
+elapsed 65s

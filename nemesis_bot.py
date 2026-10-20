@@ -35,7 +35,7 @@ VOL_PRIOR_REL = 8.9e-5
 VOL_HALF_LIFE_SECONDS = 900.0
 MODEL_SHARPNESS = 0.92
 
-SHADOW_SLIP = 0.004
+SHADOW_SLIP = 0.01
 MAX_LOSS_PER_CYCLE_USD = 1.2
 STRONG_ARM_SCORE = 0.01
 WEAK_ARM_CAP_USD = 3.5
@@ -48,7 +48,7 @@ PRIOR_CYCLE_SD_USD = 0.35
 KAPPA = 1.0
 MIN_EFFECTIVE_CYCLES = 10.0
 # fee rate is 0.07*(1-p)+0.01 per side, so cheap-fee high-price entries get their own arms
-PRICE_FLOORS = (0.05, 0.72)
+PRICE_FLOORS = (0.05, 0.72, 0.86)
 # share of cash the gate may plan to burn, leaving room for fees on the final cycles
 CASH_BUDGET_FRACTION = 0.9
 LIVE_WEIGHT = 2.0
@@ -134,6 +134,9 @@ def _build_arms() -> list["Arm"]:
         base.append(("burst", {"m": mom, "lo": 15, "hi": 120, "pmax": 0.90}))
     for zmin in (1.5, 2.5):
         base.append(("lock", {"z": zmin, "lo": 15, "hi": 40, "pmax": 0.96}))
+    # house-style dollar-gap entries, the only pattern with real-data evidence of a small positive edge
+    for gap_usd in (35.0, 55.0, 85.0):
+        base.append(("gap", {"g": gap_usd, "lo": 15, "hi": 90, "pmax": 0.90}))
     entries: list[tuple[str, dict[str, float]]] = []
     for kind, params in base:
         for pmin in PRICE_FLOORS:
@@ -189,7 +192,7 @@ class Arm:
 
 # per-side snapshot of prices, depth and model quantities for one observation
 class View:
-    __slots__ = ("ask", "bid", "spread", "asks", "bids", "z", "q", "edge", "mom", "shares", "unit")
+    __slots__ = ("ask", "bid", "spread", "asks", "bids", "z", "q", "edge", "mom", "shares", "unit", "gap")
 
     # stores only what entry rules need so evaluating ~70 arms stays cheap
     def __init__(self) -> None:
@@ -202,6 +205,7 @@ class View:
         self.q = 0.5
         self.edge = -1.0
         self.mom = 0.0
+        self.gap = 0.0
         self.shares = 0.0
         self.unit = 1.0
 
@@ -375,6 +379,7 @@ class NemesisBot:
                     exit_fee = 0.01 * view.q + 0.07 * view.q * (1 - view.q)
                     view.edge = view.q - exit_fee - view.unit
                 view.mom = sign * mom_usd / (sigma_usd * math.sqrt(3.0))
+            view.gap = sign * gap
             views[side] = view
         return views
 
@@ -411,6 +416,8 @@ class NemesisBot:
             return side if (view.mom >= p["m"] and view.z >= 0.2) else None
         if arm.kind == "lock":
             return side if view.z >= p["z"] else None
+        if arm.kind == "gap":
+            return side if view.gap >= p["g"] else None
         return None
 
     # evaluates an exit rule for any position, real or shadow, and returns True to sell
