@@ -1,0 +1,9 @@
+overconf vol 0.0 cash 10.00 cycles 0
+active [] delta 0.06
+  lock:z=2.5,lo=15,hi=40,pmax=0.96|tp=0.0,sl=0.1,hold=60.0,tx=12.0,mq=None -0.0254 9.5 26
+  trend:z=2.0,lo=15,hi=90,pmax=0.93|tp=0.0,sl=0.1,hold=60.0,tx=12.0,mq=None -0.027 2.6 6
+  lock:z=2.5,lo=15,hi=40,pmax=0.96|tp=9.0,sl=0.15,hold=9999.0,tx=8.0,mq=0.0 -0.0274 9.5 26
+  lock:z=2.5,lo=15,hi=40,pmax=0.96|tp=0.02,sl=0.06,hold=30.0,tx=12.0,mq=None -0.0278 10.9 32
+  lock:z=2.5,lo=15,hi=40,pmax=0.96|tp=9.0,sl=0.15,hold=9999.0,tx=8.0,mq=None -0.0281 9.5 26
+  lock:z=2.5,lo=15,hi=40,pmax=0.96|tp=9.0,sl=0.12,hold=9999.0,tx=8.0,mq=0.03 -0.0283 9.5 26
+12009 total shadow cycles
