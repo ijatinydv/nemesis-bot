@@ -47,7 +47,11 @@ PRIOR_MEAN = -0.02
 PRIOR_CYCLE_SD_USD = 0.35
 KAPPA = 1.0
 MIN_EFFECTIVE_CYCLES = 10.0
-GATE_SCORE = -1.0
+GATE_SCORE = -0.004
+# fee rate is 0.07*(1-p)+0.01 per side, so cheap-fee high-price entries get their own arms
+PRICE_FLOORS = (0.05, 0.72)
+# share of cash the gate may plan to burn, leaving room for fees on the final cycles
+CASH_BUDGET_FRACTION = 0.9
 LIVE_WEIGHT = 2.0
 MAX_CYCLES_PER_MARKET = 4
 SHADOW_COOLDOWN = 3.0
@@ -121,16 +125,20 @@ def _phi(x: float) -> float:
 
 # fixed grid of candidate strategies so learning has a finite, auditable search space
 def _build_arms() -> list["Arm"]:
-    entries: list[tuple[str, dict[str, float]]] = []
+    base: list[tuple[str, dict[str, float]]] = []
     for edge in (0.05, 0.09, 0.13, 0.18):
         for lo, hi in ((15, 90), (15, 200)):
-            entries.append(("edge", {"e": edge, "lo": lo, "hi": hi, "pmax": 0.93}))
+            base.append(("edge", {"e": edge, "lo": lo, "hi": hi, "pmax": 0.93}))
     for zmin in (0.7, 1.2, 2.0):
-        entries.append(("trend", {"z": zmin, "lo": 15, "hi": 90, "pmax": 0.93}))
+        base.append(("trend", {"z": zmin, "lo": 15, "hi": 90, "pmax": 0.93}))
     for mom in (1.5, 2.5):
-        entries.append(("burst", {"m": mom, "lo": 15, "hi": 120, "pmax": 0.90}))
+        base.append(("burst", {"m": mom, "lo": 15, "hi": 120, "pmax": 0.90}))
     for zmin in (1.5, 2.5):
-        entries.append(("lock", {"z": zmin, "lo": 15, "hi": 40, "pmax": 0.96}))
+        base.append(("lock", {"z": zmin, "lo": 15, "hi": 40, "pmax": 0.96}))
+    entries: list[tuple[str, dict[str, float]]] = []
+    for kind, params in base:
+        for pmin in PRICE_FLOORS:
+            entries.append((kind, dict(params, pmin=pmin)))
     exits = (
         {"tp": 0.0, "sl": 0.10, "hold": 60.0, "tx": 12.0, "mq": None},
         {"tp": 0.02, "sl": 0.06, "hold": 30.0, "tx": 12.0, "mq": None},
@@ -267,7 +275,7 @@ class NemesisBot:
         ctx_views = self._build_views(books, obs, tau, now, ref_ok)
         self._step_shadows(ctx_views, tau, now, ref_ok)
         if now - self.last_rerank >= RERANK_SECONDS:
-            self._rerank(now, elapsed, volume, target_volume)
+            self._rerank(now, elapsed, volume, target_volume, cash)
 
         self._track_live(position, cash, volume, now)
 
@@ -387,7 +395,7 @@ class NemesisBot:
         if arm.kind == "edge":
             best = None
             for side, view in views.items():
-                if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.ask < 0.05 or view.spread > 0.04:
+                if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.ask < p["pmin"] or view.spread > 0.04:
                     continue
                 if view.edge >= p["e"] and (best is None or view.edge > best[0]):
                     best = (view.edge, side)
@@ -396,7 +404,7 @@ class NemesisBot:
         if side is None:
             return None
         view = views[side]
-        if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.spread > 0.04:
+        if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.ask < p["pmin"] or view.spread > 0.04:
             return None
         if arm.kind == "trend":
             return side if view.z >= p["z"] else None
@@ -478,7 +486,7 @@ class NemesisBot:
                     arm.t_dec = now
 
     # scores arms by shrunk fee-adjusted return per dollar of volume and picks the live set
-    def _rerank(self, now: float, elapsed: float, volume: float, target_volume: float) -> None:
+    def _rerank(self, now: float, elapsed: float, volume: float, target_volume: float, cash: float = 10.0) -> None:
         self.last_rerank = now
         for arm in self.arms:
             num = 0.0
@@ -516,7 +524,9 @@ class NemesisBot:
             elif volume > 1.1 * schedule:
                 self.delta = max(0.0, self.delta - 0.005)
         best = eligible[0].score
-        floor = max(best - self.delta, GATE_SCORE)
+        # tolerable net loss per volume dollar is what cash can fund over the volume still needed
+        affordable = -CASH_BUDGET_FRACTION * max(cash, 0.0) / max(target_volume - volume, 50.0)
+        floor = max(best - self.delta, min(GATE_SCORE, affordable) if False else affordable)
         self.active = [a for a in eligible if a.score >= floor][:12]
 
     # follows the real account so live results feed the arm statistics
