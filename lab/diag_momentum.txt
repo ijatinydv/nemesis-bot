@@ -1,0 +1,9 @@
+momentum vol 0.0 cash 10.00 cycles 0
+active [] delta 0.06
+  edge:e=0.18,lo=15,hi=200,pmax=0.93|tp=9.0,sl=0.15,hold=9999.0,tx=8.0,mq=0.0 -0.0229 6.8 17
+  edge:e=0.18,lo=15,hi=90,pmax=0.93|tp=9.0,sl=0.15,hold=9999.0,tx=8.0,mq=0.0 -0.0237 4.1 13
+  trend:z=2.0,lo=15,hi=90,pmax=0.93|tp=9.0,sl=0.12,hold=9999.0,tx=8.0,mq=0.03 -0.0254 6.5 21
+  edge:e=0.18,lo=15,hi=200,pmax=0.93|tp=0.02,sl=0.06,hold=30.0,tx=12.0,mq=None -0.0259 6.8 17
+  burst:m=2.5,lo=15,hi=120,pmax=0.9|tp=9.0,sl=0.15,hold=9999.0,tx=8.0,mq=0.0 -0.0262 37.2 105
+  edge:e=0.18,lo=15,hi=90,pmax=0.93|tp=0.0,sl=0.1,hold=60.0,tx=12.0,mq=None -0.0285 4.1 13
+13029 total shadow cycles
