@@ -399,7 +399,7 @@ class NemesisBot:
         if arm.kind == "edge":
             best = None
             for side, view in views.items():
-                if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.ask < p["pmin"] or view.spread > 0.04:
+                if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.ask < p.get("pmin", 0.05) or view.spread > 0.04:
                     continue
                 if view.edge >= p["e"] and (best is None or view.edge > best[0]):
                     best = (view.edge, side)
@@ -408,7 +408,7 @@ class NemesisBot:
         if side is None:
             return None
         view = views[side]
-        if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.ask < p["pmin"] or view.spread > 0.04:
+        if view.shares < MIN_ORDER_SHARES or view.ask > p["pmax"] or view.ask < p.get("pmin", 0.05) or view.spread > 0.04:
             return None
         if arm.kind == "trend":
             return side if view.z >= p["z"] else None
