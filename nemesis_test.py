@@ -155,5 +155,17 @@ class NemesisContractTests(unittest.TestCase):
             self.assertIn(bot.decide(make_obs(1_000_000.0, tau, market=market))["action"], {"HOLD", "BUY", "SELL"})
 
 
+    # the house-style dollar-gap strategy must buy the favoured side on a large gap and ignore a small one
+    def test_gap_arm_enters_on_large_gap_only(self) -> None:
+        for gap, expected in ((120.0, "BUY"), (5.0, "HOLD")):
+            bot = armed_bot()
+            arm = next(a for a in bot.arms if a.kind == "gap" and a.p["pmin"] == 0.05)
+            bot.active = [arm]
+            decision = bot.decide(make_obs(1_000_000.0, 60.0, gap=gap))
+            self.assertEqual(decision["action"], expected)
+            if expected == "BUY":
+                self.assertEqual(decision["outcome"], "YES")
+
+
 if __name__ == "__main__":
     unittest.main()

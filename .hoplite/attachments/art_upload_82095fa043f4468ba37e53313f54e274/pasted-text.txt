@@ -1,0 +1,297 @@
+Open for entries
+prediction-market bots
+Build a paper bot that creates trading volume.
+Start with $10 of simulated cash. To qualify, complete $1,000 of BUY-plus-SELL volume in 24 hours and be flat at that first clean crossing. We run the same paper test for every entry.
+Prize
+$500 first prize
+Closes
+Rolling qualification
+Scored on
+Cash at qualifying crossing
+Benchmark
+24-hour paper run
+1Download
+Get the runnable Python kit.
+2Run
+Start the bot with one command.
+3Test
+Pass the included smoke test.
+4Submit
+Send the exact frozen build.
+Get the runnable Python kit ↓
+How scoring works →
+Download the brief, run a sample, then follow the submission steps below.Download starter brief ↓
+
+Public board
+
+Provisional snapshot
+open
+A provisional paper snapshot for 11 builds is below. It is not an official ranking; official 24-hour results are still pending.
+
+One entry could not be tested because its exact code was unavailable. Later submissions and code changes are not included. See the 12-hour results →
+
+Provisional · 20 October 2026
+
+12-hour paper snapshot
+A diagnostic replay of the submissions frozen for the 19 October run. It used 143 valid five-minute markets; one invalid market remains a gap. This is not an official score, ranking, qualification, or disqualification. Official qualification still requires the published 24-hour test.
+
+View all 11 results ↓
+You submit code only. You do not deposit money, open a trading account, or place a real trade. Entry is free and online. YeNo may consider selected bots for a separate pilot under written terms; that review is optional and does not affect scoring. Visit YeNo ↗ Submit your bot →
+
+Diagnostic only · not the official standings
+
+Results from the 12-hour paper snapshot
+The replay covered 143 of the 144 scheduled markets and left the missing market as a gap. It evaluated 11 sourceable builds frozen on 16 October; a twelfth entry could not be scored because its exact source was unavailable. Later submissions or revised builds are not included. No bot reached the $1,000 volume target.
+
+Provisional results, sorted by completed trade volume; not an official ranking
+Builder	Completed trade volume	Cash remaining*	Fees	Completed buy/sell trades	Markets checked	At stop
+Hardik Gautam	$506.75	$3.04	$10.74	59	143	No open trade
+Devansh Goenka	$459.38	$1.15	$13.00	59	143	No open trade
+Vidyansh Singh	$448.19	$3.63	$8.39	46	143	No open trade
+Jatin Kumar	$208.23	$0.05	$9.08	33	143	No open trade
+Jianhao Cheng	$172.54	$0.01	$7.51	26	15	Open trade
+Jaswanth L	$145.90	$1.40	$6.22	41	59	Open trade
+Anmol	$101.61	$3.19	$2.87	13	35	Open trade
+Avinash Gehi	$67.60	$2.63	$2.27	7	9	Open trade
+Hardik Hinduja	$29.24	$9.23	$0.49	3	143	No open trade
+Omar Baró / Unfire	$0.00	$10.00	$0.00	0	143	No open trade
+Sahil Deshmukh	$0.00	$5.00	$0.21	0	1	Open trade
+*If a bot stopped with an open trade, cash remaining does not include that trade’s value. Amounts are rounded to the nearest cent. Trade volume counts only buys that were later sold. Rows are sorted by trade volume for readability; this is not an official rank.
+
+Your first five minutes
+
+1. Download the kit
+→
+python3 yeno_competition_starter_bot.py
+→
+python3 yeno-smoke-test.py
+You should see contractSmokePassed: true. That confirms your local bot works; it is not a score.
+
+How it works
+
+Start with working code. Make it better.
+Download our bot, test your strategy, and send us a frozen build. We handle the market data, simulated trades, and scoring.
+
+01
+Start free
+Download a working bot
+Start with our house bot and exact test contract. You can run everything locally without a YeNo account or trading capital.
+
+02
+Build
+Make the loop smarter
+Improve when it buys, when it exits, and how much it risks. Use the included local smoke test to confirm your endpoint, then submit the frozen build you want evaluated.
+
+03
+Submit
+Send code, not money
+Submit one frozen commit or container. Builderr runs it for 24 hours on unseen YeNo BTC market data and handles the cash, fills, fees, and scoring.
+
+04
+Win
+Cross $1,000 while flat
+Bots qualify when a completed cycle first takes them to $1,000 of volume and they are then flat with no pending action. The highest-ranked qualifying bot wins the YeNo-sponsored $500 prize.
+
+Qualification
+
+One exact contract.
+The public rule, download, and machine evaluator use the same numbers.
+
+✓
+The evaluator starts with exactly $10. You do not deposit or top up money, and the bot cannot borrow or use leverage.
+✓
+Spend no more than $5 cash on any BUY, including protocol and platform fees.
+✓
+Reach at least $1,000 in eligible executed volume within the 24-hour official run.
+✓
+At the first $1,000 completed-cycle crossing, have zero positions and no pending actions. There is no separate minimum ending-balance rule.
+✓
+Hold at most one position or pending BUY at a time.
+✓
+Use YeNo BTC five-minute Up/Down markets only.
+✓
+Return valid decisions and reproduce from the submitted immutable commit or container digest.
+✓
+Never self-trade, coordinate fills, or trade against another competition bot or entrant-controlled account.
+✓
+Submit only your algorithm. The competition does not give you a trading account or place real orders for you.
+Scoring
+
+Complete cycles create volume. Nothing else does.
+The bot cannot inflate its score with retries, order count, or unfinished inventory.
+
+Eligible volume
+
+executed BUY notional + executed SELL notional
+$5.00
+gross BUY
+$4.91
+gross SELL
+$9.91
+credited after full exit
+Rejected orders, cancellations, zero fills, settlements, redemptions, pending inventory, and incomplete exits add zero. Partial fills are combined into the same cycle.
+
+RANK 1
+Cash at qualifying crossing
+Among bots that are flat at their first clean $1,000 crossing, the highest simulated cash wins.
+
+RANK 2
+Maximum drawdown
+If cash ties exactly, the bot with lower peak-to-trough drawdown ranks higher.
+
+RANK 3
+Time to target
+If both still tie, the bot reaching $1,000 sooner ranks higher.
+
+Starter kit
+
+Start building in three steps.
+You need Python 3. No YeNo account, API key, wallet, or deposit.
+
+STEP 1
+Download
+Get the minimal bot, sample input, local test, and exact rules in one zip.
+
+Download the starter kit ↓
+STEP 2
+Run
+Start the bot locally. It listens for the same request shape used in the official paper run.
+
+Open the 3-step guide ↓
+STEP 3
+Test
+Send the included sample market-data request to your local API and confirm its answer is valid.
+
+Get the local API test ↓
+The local test checks only your POST /decide interface. It is not a score. In the official run, Builderr sends unseen paper market data to that same endpoint—so there is no separate YeNo test account or API key to request.
+
+Then change the strategy. Do not change evaluator-owned cash, fills, fees, volume, or position accounting.
+
+See the sample request ↓
+Read the exact API and scoring contract ↓
+These are internal development replay results, not official scores. The replay paths are not included in the starter kit. None of the starter bots has qualified yet.
+
+$559 median · $943 best
+
+House Bot v1
+Trades five-share BTC-reference moves near expiry, checks immediate exit depth, caps entry loss, and allows two cycles per market. This is the included code baseline.
+
+$169 median · $762 best
+
+Precision variant
+Reference configuration only; its implementation is not included. It requires the order book to agree with the public BTC signal and trades less often.
+
+$168 median · $818 best
+
+Aggressive reference variant
+Reference configuration only; its implementation is not included. It removes the immediate-loss cap and was less reliable in development runs.
+
+Minimal starter bot ↓
+House Bot v1 source ↓
+Tested configurations ↓
+Development benchmark · Sep 22, 2026
+
+The house bot got close. It did not qualify.
+These results come from resampled recorded regimes used during development. They guide builders; they are not a forward qualification result.
+
+$559
+median volume, all 30 paths
+18/30
+paths finishing flat
+$680
+median among flat paths
+$943
+best flat path
+No validation path crossed $1,000. Six of 30 reached at least $750. Under a two-cent adverse execution stress, the best run fell to $385 and the median to $70. The largest opportunities are better regime selection, execution timing, dynamic sizing, and guaranteed deadline flattening.
+
+Benchmark meaning: $943 is the best observed development run—not an expected result, promise, or official score.
+
+Build against this
+
+One local endpoint. No account, deposit, or trading.
+You submit only the algorithm. It never receives a key or controls a real ledger; it only returns HOLD, BUY, or SELL to the paper evaluator.
+
+POST /decide
+JSON in · JSON out
+// evaluator → your bot
+{
+  "market": { "id": "opaque", "secondsToClose": 84 },
+  "account": { "cashUsd": 10, "eligibleVolumeUsd": 0, "position": null },
+  "rules": {
+    "maximumBuyCashUsd": 5,
+    "targetVolumeUsd": 1000,
+    "evaluationWindowHours": 24
+  },
+  "reference": {
+    "btcMidUsd": 80482.155,
+    "openingTargetUsd": 80444.946,
+    "observedAt": 1789880823.619,
+    "targetObservedAt": 1789880814.203,
+    "targetProvisional": false
+  },
+  "books": {
+    "YES": { "bids": [[0.49, 100]], "asks": [[0.50, 100]] },
+    "NO":  { "bids": [[0.49, 100]], "asks": [[0.50, 100]] }
+  }
+}
+
+// your bot → evaluator
+{ "action": "BUY", "outcome": "YES", "maxCashUsd": 4.80 }
+HOLD
+Skip a weak, thin, stale, or late setup.
+
+BUY
+Choose YES or NO and a fee-inclusive cash ceiling.
+
+SELL
+Request a full exit; partial fills remain one cycle.
+
+Submit a repository or HTTPS endpoint plus an immutable commit or container digest. Official runs block arbitrary outbound network access and record the exact input-data hash.
+
+Reality model
+
+A midpoint backtest will not pass.
+The paper evaluator models the expensive and awkward parts of real execution so results are useful to YeNo.
+
+01
+Pay both fee layers
+The evaluator applies the 1% YeNo overlay observed in our test account and the dynamic crypto taker fee, 0.07 × shares × price × (1 − price), on entry and exit.
+
+02
+Trade the later book
+Every action waits 250 ms, then crosses a later L2 update for its own outcome. An opposite-side update cannot reuse a pre-decision quote.
+
+03
+Expect partial fills
+Displayed depth, minimum order size, split exits, share dust, and executable one-sided books near expiry are modeled. A partial exit remains the same cycle.
+
+04
+Treat writes as ambiguous
+A timeout is not permission to retry. Reconcile the venue first or risk opening a duplicate position.
+
+05
+Respect the clock
+Books older than two seconds are rejected. New entries are blocked inside the final 15 seconds. Qualification requires a flat account at the first clean $1,000 crossing.
+
+06
+Use causal reference data
+Each request can include the public BTC midpoint, YeNo opening target, receive timestamps, and a provisional flag. Future-stamped target rows are excluded.
+
+Protocol fee source: Polymarket's current fee documentation. It specifies the crypto rate, price curve, taker-only application, and five-decimal fee precision. The additional 1% overlay is modeled from observed YeNo test-account execution.
+
+Market scope
+
+BTC five-minute Up/Down only.
+A narrow universe keeps market data, fills, and qualification comparable.
+
+Hidden forward paper data
+Qualification uses one unseen, receive-time-ordered 24-hour YeNo window. Internal recorded replay informed development but is not bundled with the starter kit or used for the official score.
+
+Code only—no real trading
+Entrants submit an algorithm for paper evaluation. You do not fund an account, receive trading credentials, or place real orders.
+
+Submit
+
+Start with the starter. Submit a frozen build.
+The house bot is a development baseline, not a qualifying result. Run your improved version locally, then send the exact commit or container you want us to test.
+
