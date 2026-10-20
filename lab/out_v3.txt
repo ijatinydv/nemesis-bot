@@ -1,0 +1,7 @@
+lag35      vol med  1007.8 max  1012.8 | cross 2/2 flat 2/2 | cash med 176.30 | cash@cross med 176.30 min 155.22 | cycles med 84 unsold 0
+lag35w     vol med  1005.8 max  1008.1 | cross 2/2 flat 2/2 | cash med 66.45 | cash@cross med 66.45 min 64.92 | cycles med 100 unsold 0
+efficient  vol med     0.0 max     0.0 | cross 0/2 flat 2/2 | cash med 10.00 | cash@cross - | cycles med 0 unsold 0
+weak       vol med     0.0 max     0.0 | cross 0/2 flat 2/2 | cash med 10.00 | cash@cross - | cycles med 0 unsold 0
+lag1.5     vol med   371.7 max   731.8 | cross 0/2 flat 2/2 | cash med 15.27 | cash@cross - | cycles med 40 unsold 0
+lag6       vol med  1011.8 max  1020.5 | cross 2/2 flat 2/2 | cash med 112.73 | cash@cross med 112.73 min 75.81 | cycles med 92 unsold 0
+elapsed 228s
